@@ -11,8 +11,6 @@ using namespace std;
 struct Word
 {
     string key;
-    string originalWord;
-    string partOfSpeech;
     string translatedMeaning;
 };
 struct WordEntry

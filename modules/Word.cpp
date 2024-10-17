@@ -8,27 +8,20 @@ using namespace std;
 Word WordService::stringToWord(string &input)
 {
     size_t cue1 = input.find('(');
-    size_t cue2 = input.find(')');
-    if (cue1 == string::npos || cue2 == string::npos || cue2 < cue1)
+    if (cue1 == string::npos)
     {
         throw out_of_range("string not map with word format!");
     }
 
     size_t ows = 0;
     size_t owl = cue1 - 1;
-    size_t pss = cue1;
-    size_t psl = cue2 - cue1 + 1;
-    size_t tls = cue2 + 2;
     try
     {
         string originalWord = input.substr(ows, owl);
-        string partOfSpeech = input.substr(pss, psl);
-        string translatedMeaning = input.substr(tls);
+        string translatedMeaning = input;
 
         Word word;
         word.key = WordService::getKey(originalWord);
-        word.originalWord = originalWord;
-        word.partOfSpeech = partOfSpeech;
         word.translatedMeaning = translatedMeaning;
         return word;
     }

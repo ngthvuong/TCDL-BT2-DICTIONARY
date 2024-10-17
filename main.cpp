@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-    AVLTree dictionary;
+    AVLTree* dictionary = new AVLTree();
     vector<string> files = {"data/a.txt"};
     int length = files.size();
     for (int i = 0; i < length; i++)
@@ -30,7 +30,7 @@ int main()
                 try
                 {
                     Word word = WordService::stringToWord(line);
-                    dictionary.addNode(word);
+                    dictionary->addNode(word);
                 }
                 catch (const out_of_range error)
                 {
@@ -48,5 +48,6 @@ int main()
         }
         file.close();
     }
-    dictionary.print();
+    dictionary->print();
+    delete dictionary;
 }
