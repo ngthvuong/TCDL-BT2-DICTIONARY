@@ -21,6 +21,7 @@ class AVLTree
 {
 private:
     AVLNode *root;
+    bool appendWordFlag;
 
     AVLNode *leftRotate(AVLNode *);
     AVLNode *rightRotate(AVLNode *);
@@ -28,11 +29,17 @@ private:
     AVLNode *appendNode(AVLNode *, Word);
     int getHeight(AVLNode *);
     int getBalance(AVLNode *);
+    void release(AVLNode *);
+    AVLNode *add(AVLNode *, Word);
+    void show(AVLNode *);
 
 public:
     AVLTree();
-    bool addNode(Word *);
+
+    bool addNode(Word);
     WordEntry search(string);
+    void print();
+
     ~AVLTree();
 };
 #endif

@@ -10,6 +10,7 @@ using namespace std;
 
 struct Word
 {
+    string key;
     string originalWord;
     string partOfSpeech;
     string translatedMeaning;
@@ -25,7 +26,7 @@ public:
     static Word stringToWord(string &);
     static string getKey(const string &);
     static int compareKey(const string &, const string &);
-    static WordEntry createWordEntry(const Word);
+    static WordEntry createWordEntry(const Word&);
     static bool append(Word, WordEntry &);
 };
 #endif

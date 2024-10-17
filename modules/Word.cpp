@@ -19,17 +19,24 @@ Word WordService::stringToWord(string &input)
     size_t pss = cue1;
     size_t psl = cue2 - cue1 + 1;
     size_t tls = cue2 + 2;
+    try
+    {
+        string originalWord = input.substr(ows, owl);
+        string partOfSpeech = input.substr(pss, psl);
+        string translatedMeaning = input.substr(tls);
 
-    string originalWord = input.substr(ows, owl);
-    string partOfSpeech = input.substr(pss, psl);
-    string translatedMeaning = input.substr(tls);
-
-    Word word;
-    word.originalWord = originalWord;
-    word.partOfSpeech = partOfSpeech;
-    word.translatedMeaning = translatedMeaning;
-
-    return word;
+        Word word;
+        word.key = WordService::getKey(originalWord);
+        word.originalWord = originalWord;
+        word.partOfSpeech = partOfSpeech;
+        word.translatedMeaning = translatedMeaning;
+        return word;
+    }
+    catch (const out_of_range error)
+    {
+        cout << "input : " << input << endl;
+        throw out_of_range(error.what());
+    }
 }
 string WordService::getKey(const string &value)
 {
@@ -69,10 +76,10 @@ int WordService::compareKey(const string &key1, const string &key2)
 
     return result;
 }
-WordEntry WordService::createWordEntry(const Word word)
+WordEntry WordService::createWordEntry(const Word &word)
 {
     WordEntry wordEntry;
-    wordEntry.key = WordService::getKey(word.originalWord);
+    wordEntry.key = word.key;
     wordEntry.items = {word};
     return wordEntry;
 }

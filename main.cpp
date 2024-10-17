@@ -10,6 +10,7 @@ using namespace std;
 
 int main()
 {
+    AVLTree dictionary;
     vector<string> files = {"data/a.txt"};
     int length = files.size();
     for (int i = 0; i < length; i++)
@@ -20,17 +21,8 @@ int main()
             cout << "Unable to open file: " << files[i] << endl;
             continue; // Skip to the next file if it can't be opened
         }
-        cout << "Opened file: " << files[i] << endl;
-
-        int check = 0;
+        // int check = 0;
         string line;
-
-        string str1 = "cbcfef1";
-        string str2 = "cbddef12";
-
-        int result = WordService::compareKey(str1, str2);
-        cout << "result: " << result << endl;
-
         while (getline(file, line))
         {
             if (!line.empty())
@@ -38,17 +30,23 @@ int main()
                 try
                 {
                     Word word = WordService::stringToWord(line);
-                }catch(out_of_range error){
-                    cout << "Errors: "<< error.what() << endl;
+                    dictionary.addNode(word);
+                }
+                catch (const out_of_range error)
+                {
+                    cout << "Errors: " << error.what() << endl;
+                    continue;
                 }
             }
-            if (line.empty())
-            {
-                check++;
-            }
-            if (check == 1)
-                break;
+
+            // if (line.empty())
+            // {
+            //     check++;
+            // }
+            // if (check == 1)
+            //     break;
         }
         file.close();
     }
+    dictionary.print();
 }
