@@ -44,6 +44,7 @@ public:
     AVLTree();
 
     bool addNode(Word);
+    
     WordEntry *search(string);
     void print();
 

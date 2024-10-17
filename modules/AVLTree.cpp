@@ -12,6 +12,7 @@ AVLTree::AVLTree()
     root = nullptr;
     appendWordFlag = false;
 }
+
 int AVLTree::getHeight(AVLNode *node)
 {
     if (!node)

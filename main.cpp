@@ -9,6 +9,7 @@
 using namespace std;
 
 void prepareDictionary(AVLTree *&);
+
 int main()
 {
     AVLTree *dictionary = new AVLTree();
