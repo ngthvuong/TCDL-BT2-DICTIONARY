@@ -23,8 +23,9 @@ class WordService
 {
 public:
     static Word stringToWord(string &);
-    static string getKey(const Word &);
+    static string getKey(const string &);
     static int compareKey(const string &, const string &);
+    static WordEntry createWordEntry(const Word);
     static bool append(Word, WordEntry &);
 };
 #endif
