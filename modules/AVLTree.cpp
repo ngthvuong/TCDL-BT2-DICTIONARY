@@ -20,6 +20,11 @@ int AVLTree::getHeight(AVLNode *node)
     }
     return node->height;
 }
+void AVLTree::updateHeight(AVLNode *node)
+{
+    node->height = 1 + max(getHeight(node->pLeft), getHeight(node->pRight));
+}
+
 AVLNode *AVLTree::createNode(Word word)
 {
     WordEntry wordEntry = WordService::createWordEntry(word);
@@ -36,11 +41,10 @@ AVLNode *AVLTree::appendNode(AVLNode *node, Word word)
     node->data.items.push_back(word);
     return node;
 }
+
 int AVLTree::getBalance(AVLNode *node)
 {
-    int balance = getHeight(node->pRight) - getHeight(node->pLeft);
-    return (balance < -1) ? -1 : (balance > 1) ? 1
-                                               : 0;
+    return getHeight(node->pRight) - getHeight(node->pLeft);
 }
 
 AVLNode *AVLTree::rightRotate(AVLNode *node)
@@ -49,12 +53,11 @@ AVLNode *AVLTree::rightRotate(AVLNode *node)
     node->pLeft = x->pRight;
     x->pRight = node;
 
-    node->height = 1 + max(getHeight(node->pLeft), getHeight(node->pRight));
-    x->height = 1 + max(getHeight(x->pLeft), getHeight(x->pRight));
+    updateHeight(node);
+    updateHeight(x);
 
     return x;
 }
-
 AVLNode *AVLTree::leftRotate(AVLNode *node)
 {
 
@@ -62,8 +65,8 @@ AVLNode *AVLTree::leftRotate(AVLNode *node)
     node->pRight = x->pLeft;
     x->pLeft = node;
 
-    node->height = 1 + max(getHeight(node->pLeft), getHeight(node->pRight));
-    x->height = 1 + max(getHeight(x->pLeft), getHeight(x->pRight));
+    updateHeight(node);
+    updateHeight(x);
 
     return x;
 }
@@ -97,10 +100,12 @@ AVLNode *AVLTree::add(AVLNode *node, Word word)
         node->height = 1 + max(getHeight(node->pLeft), getHeight(node->pRight));
 
         int balance = getBalance(node);
-        if (balance < 0)
+        if (balance < -1)
         {
+            int leftBalance = getBalance(node->pLeft);
+
             // Left Left
-            if (getHeight(node->pLeft->pLeft) >= getHeight(node->pLeft->pRight))
+            if (leftBalance <= 0)
             {
                 return rightRotate(node);
             }
@@ -111,10 +116,11 @@ AVLNode *AVLTree::add(AVLNode *node, Word word)
                 return rightRotate(node);
             }
         }
-        if (balance > 0 && WordService::compareKey(word.key, node->data.key) > 0)
+        if (balance > 1)
         {
+            int rightBalance = getBalance(node->pRight);
             // Right Right
-            if (getHeight(node->pRight->pLeft) <= getHeight(node->pRight->pRight))
+            if (rightBalance >= 0)
             {
                 return leftRotate(node);
             }
@@ -167,7 +173,6 @@ WordEntry *AVLTree::search(string keyword)
 
 void AVLTree::show(AVLNode *node)
 {
-
     if (!node)
     {
         return;
@@ -181,10 +186,9 @@ void AVLTree::show(AVLNode *node)
     }
     return;
 }
-
 void AVLTree::print()
 {
-    cout << "print dictionary" << endl;
+    cout << "Print Dictionary B Tree: " << endl;
     show(root);
 }
 

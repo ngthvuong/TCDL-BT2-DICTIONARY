@@ -14,13 +14,12 @@ string WordService::trim(string str){
     return str.substr(start, end - start +1);
 
 }
-
 Word WordService::stringToWord(string &input)
 {
     size_t cue1 = input.find('(');
     if (cue1 == string::npos)
     {
-        throw out_of_range("string not map with word format!");
+        throw out_of_range("- String not map with word format!");
     }
 
     size_t ows = 0;
@@ -41,6 +40,7 @@ Word WordService::stringToWord(string &input)
         throw out_of_range(error.what());
     }
 }
+
 string WordService::getKey(const string &value)
 {
     string result = value;
@@ -79,6 +79,7 @@ int WordService::compareKey(const string &key1, const string &key2)
 
     return result;
 }
+
 WordEntry WordService::createWordEntry(const Word &word)
 {
     WordEntry wordEntry;

@@ -23,23 +23,28 @@ private:
     AVLNode *root;
     bool appendWordFlag;
 
-    AVLNode *leftRotate(AVLNode *);
-    AVLNode *rightRotate(AVLNode *);
+    int getHeight(AVLNode *);
+    void updateHeight(AVLNode *);
+
     AVLNode *createNode(Word);
     AVLNode *appendNode(AVLNode *, Word);
-    int getHeight(AVLNode *);
+
+    AVLNode *leftRotate(AVLNode *);
+    AVLNode *rightRotate(AVLNode *);
+
     int getBalance(AVLNode *);
-    void release(AVLNode *);
+
     AVLNode *add(AVLNode *, Word);
     AVLNode *findNode(AVLNode *, string);
-
     void show(AVLNode *);
+
+    void release(AVLNode *);
 
 public:
     AVLTree();
 
     bool addNode(Word);
-    WordEntry* search(string);
+    WordEntry *search(string);
     void print();
 
     ~AVLTree();
