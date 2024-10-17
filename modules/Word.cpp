@@ -19,7 +19,7 @@ Word WordService::stringToWord(string &input)
     size_t cue1 = input.find('(');
     if (cue1 == string::npos)
     {
-        cout << input << endl;
+        cout << "Error input" << input << endl;
         throw out_of_range("- String not map with word format!");
     }
 
