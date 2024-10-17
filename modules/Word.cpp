@@ -5,6 +5,16 @@
 
 using namespace std;
 
+string WordService::trim(string str){
+    size_t start = str.find_first_not_of(" \t\r\n");
+    size_t end = str.find_last_not_of(" \t\r\n");
+    if(start == string::npos || end == string::npos || start > end){
+        return "";
+    }
+    return str.substr(start, end - start +1);
+
+}
+
 Word WordService::stringToWord(string &input)
 {
     size_t cue1 = input.find('(');

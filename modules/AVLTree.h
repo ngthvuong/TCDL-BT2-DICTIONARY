@@ -31,13 +31,15 @@ private:
     int getBalance(AVLNode *);
     void release(AVLNode *);
     AVLNode *add(AVLNode *, Word);
+    AVLNode *findNode(AVLNode *, string);
+
     void show(AVLNode *);
 
 public:
     AVLTree();
 
     bool addNode(Word);
-    WordEntry search(string);
+    WordEntry* search(string);
     void print();
 
     ~AVLTree();

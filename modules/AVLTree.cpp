@@ -45,23 +45,9 @@ int AVLTree::getBalance(AVLNode *node)
 
 AVLNode *AVLTree::rightRotate(AVLNode *node)
 {
-    if (node->pLeft)
-    {
-        cout << "right co node->pLeft" << endl;
-    }
-    else
-    {
-        cout << "right khong co node->pLeft" << endl;
-    }
-
     AVLNode *x = node->pLeft;
-    cout << "test run1" << endl;
-
     node->pLeft = x->pRight;
-    cout << "test run2" << endl;
-
     x->pRight = node;
-    cout << "test run2" << endl;
 
     node->height = 1 + max(getHeight(node->pLeft), getHeight(node->pRight));
     x->height = 1 + max(getHeight(x->pLeft), getHeight(x->pRight));
@@ -111,72 +97,33 @@ AVLNode *AVLTree::add(AVLNode *node, Word word)
         node->height = 1 + max(getHeight(node->pLeft), getHeight(node->pRight));
 
         int balance = getBalance(node);
-        int balanceLeft = getBalance(node->pLeft);
-        int balanceRight = getBalance(node->pRight);
-
-        // Left Left
-        if (balance < 0 && WordService::compareKey(word.key, node->data.key) < 0)
+        if (balance < 0)
         {
-            cout << "left left" << endl;
-            cout << "left height: " << getHeight(node->pLeft) << endl;
-            cout << "right height: " << getHeight(node->pRight) << endl;
-            cout << "===========" << endl;
-            return rightRotate(node);
-        }
-        // Right Right
-        if (balance > 0 && WordService::compareKey(word.key, node->data.key) > 0)
-        {
-            cout << "left left" << endl;
-            cout << "left height: " << getHeight(node->pLeft) << endl;
-            cout << "right height: " << getHeight(node->pRight) << endl;
-            cout << "===========" << endl;
-
-            return leftRotate(node);
-        }
-        // Left Right
-        if (balance < 0 && WordService::compareKey(word.key, node->data.key) > 0)
-        {
-            cout << "Left Right" << endl;
-            cout << "left height: " << getHeight(node->pLeft) << endl;
-            cout << "right height: " << getHeight(node->pRight) << endl;
-            cout << "===========" << endl;
-            cout << node->data.key << endl;
-
-            node->pLeft = leftRotate(node->pLeft);
-            cout << "Left Right END" << endl;
-
-            return rightRotate(node);
-        }
-        // Right Left
-        if (balance > 0 && WordService::compareKey(word.key, node->data.key) < 0)
-        {
-            cout << "Right Left" << endl;
-            cout << "left height: " << getHeight(node->pLeft) << endl;
-            cout << "right height: " << getHeight(node->pRight) << endl;
-            cout << "===========" << endl;
-
-            // cout << "word key: " << word.key << endl;
-            // cout << "node->data.key: " << node->data.key << endl;
-            // cout << "node->pLeft->data.key: " << node->pLeft->data.key << endl;
-
-            // cout << "node->pLeft->pLeft->data.key: " << node->pLeft->pLeft->data.key << endl;
-
-            cout << "Right Left" << endl;
-            cout << node->data.key << endl;
-            cout << "Left" << getHeight(node->pLeft) << endl;
-            cout << "Right" << getHeight(node->pRight) << endl;
-
-            if (node->pRight)
+            // Left Left
+            if (getHeight(node->pLeft->pLeft) >= getHeight(node->pLeft->pRight))
             {
-                cout << "Co right" << endl;
+                return rightRotate(node);
             }
+            // Left Right
             else
             {
-                cout << "Ko right" << endl;
+                node->pLeft = leftRotate(node->pLeft);
+                return rightRotate(node);
             }
-
-            node->pRight = rightRotate(node->pRight);
-            return leftRotate(node);
+        }
+        if (balance > 0 && WordService::compareKey(word.key, node->data.key) > 0)
+        {
+            // Right Right
+            if (getHeight(node->pRight->pLeft) <= getHeight(node->pRight->pRight))
+            {
+                return leftRotate(node);
+            }
+            // Right Left
+            else
+            {
+                node->pRight = rightRotate(node->pRight);
+                return leftRotate(node);
+            }
         }
     }
     return node;
@@ -186,6 +133,36 @@ bool AVLTree::addNode(Word word)
     root = add(root, word);
     appendWordFlag = false;
     return 1;
+}
+
+AVLNode *AVLTree::findNode(AVLNode *node, string key)
+{
+    if (!node)
+    {
+        return NULL;
+    }
+
+    if (node->data.key == key)
+    {
+        return node;
+    }
+
+    int compareResult = WordService::compareKey(key, node->data.key);
+    if (compareResult < 0)
+    {
+        return findNode(node->pLeft, key);
+    }
+    else
+    {
+        return findNode(node->pRight, key);
+    }
+}
+WordEntry *AVLTree::search(string keyword)
+{
+    string key = WordService::getKey(keyword);
+    AVLNode *result = findNode(root, key);
+    WordEntry *wordEntry = &result->data;
+    return wordEntry;
 }
 
 void AVLTree::show(AVLNode *node)

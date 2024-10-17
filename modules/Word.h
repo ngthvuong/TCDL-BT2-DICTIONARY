@@ -21,6 +21,9 @@ struct WordEntry
 class WordService
 {
 public:
+    static string trim(string);
+    static string get(string); 
+
     static Word stringToWord(string &);
     static string getKey(const string &);
     static int compareKey(const string &, const string &);
